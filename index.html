@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un mensaje para vo</title>
+    <style>
+        /* Importamos una fuente que se siente más "escrita a mano" */
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ffcaca 0%, #ebedee 100%); /* Fondo más neutro y elegante */
+            font-family: 'Caveat', cursive;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            perspective: 1000px; /* Añadimos perspectiva para un efecto 3D más realista en la solapa */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Efecto de "levantarse" al pasar el mouse por encima */
+        .wrapper:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #f7f3e9; /* Un color crema para el sobre */
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            /* Dividimos el sobre en dos partes para que la carta salga "de adentro" */
+        }
+        
+        /* Parte trasera del sobre */
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f7f3e9;
+            border-radius: 10px;
+            z-index: -1; /* Se asegura que esté detrás de la carta */
+        }
+
+        /* La solapa del sobre */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-top: 100px solid #e7d8c9; /* Un tono más oscuro para la solapa */
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); /* Animación más suave */
+            z-index: 3;
+        }
+        
+        /* Corazón que sella el sobre */
+        .heart {
+            position: absolute;
+            top: 85px; /* Ajustado para que quede sobre la punta de la solapa */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #e23b3b;
+            border-radius: 0 0 0 5px;
+            transform: translateX(-50%) rotate(-45deg);
+            z-index: 4;
+            transition: all 0.5s ease;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e23b3b;
+        }
+        .heart::before {
+            top: -15px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: 15px;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 95%;
+            background-color: #fffaf0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 24px; /* Un poco más grande para la nueva fuente */
+            color: #3d3232;
+            text-align: center;
+            z-index: 1; /* La carta está debajo de la solapa al inicio */
+            /* La transición ahora incluye un pequeño giro para más naturalidad */
+            transition: transform 0.7s cubic-bezier(0.47, 0.0, 0.75, 0.72), z-index 0s 0.3s;
+        }
+
+        /* --- ESTADO ABIERTO --- */
+        .wrapper.open .letter {
+            transform: translateY(-130px) rotate(-2deg); /* Mueve la carta y la inclina un poco */
+            z-index: 5; /* Pone la carta por encima de todo */
+        }
+
+        .wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 1; /* La solapa se va para atrás */
+        }
+        
+        .wrapper.open .heart {
+            opacity: 0; /* El corazón desaparece */
+            transform: translateY(-30px) scale(0.5); /* Y se va hacia arriba */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="letter">
+            <p>
+                Eres la que me alegra los días y me gusta todo de ti, quiero pasar tiempo contigo.
+                <br>
+                Quería recordártelo.❤️
+            </p>
+        </div>
+        <div class="envelope">
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <script>
+        // Seleccionamos el elemento principal
+        const wrapper = document.querySelector('.wrapper');
+
+        // Añadimos un "escuchador de eventos" que reacciona al clic
+        wrapper.addEventListener('click', () => {
+            // Cada vez que se hace clic, añade o quita la clase 'open'
+            wrapper.classList.toggle('open');
+        });
+    </script>
+
+</body>
+</html>
